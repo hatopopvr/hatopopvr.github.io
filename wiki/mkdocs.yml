@@ -1,0 +1,51 @@
+# Project information
+site_name: はとぽぷのさいと(仮)
+site_description: 'はとぽぷのなんか置く用の暫定ページです'
+site_author: 'hatopop'
+
+# Copyright
+copyright: 'Copyright (c) 2022'
+
+# Documentation and theme
+#docs_dir: 'docs'
+#theme: readthedocs
+theme:
+  name: 'material'
+  logo: 'images/icon.png'
+  language: 'ja'
+  palette:
+    - scheme: default
+      primary: red
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: ダークモードに切り替えます。
+    - scheme: slate
+      primary: red
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch
+        name: ライトモードに切り替えます
+
+
+# Options
+extra:
+  palette:
+    primary: 'Light Blue'
+    accent: 'Orange'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  i18n:
+    prev: 'Previous'
+    next: 'Next'
+  author:
+    github: 'hatopopvr'
+    twitter: '@hatopop_vr'
+  search:
+    language: 'jp'
+
+# Extensions
+markdown_extensions:
+  - codehilite
+  - admonition
