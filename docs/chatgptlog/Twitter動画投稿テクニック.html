@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="https://chat.openai.com/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Twitter動画高画質テクニック</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll()
+    </script>
+
+    <style>
+        :root {
+            --tw-prose-code: #111827;
+            --tw-prose-hr: #e5e7eb;
+            --tw-prose-links: #111827;
+            --tw-prose-headings: #111827;
+            --tw-prose-quotes: #111827;
+            --tw-prose-counters: #6b7280;
+            --page-bg: #f7f7f8;
+            --page-text: #374151;
+            --conversation-odd-bg: rgba(247,247,248);
+            --th-boarders: #4b5563;
+            --td-boarders: #374151;
+            --meta-title: #616c77;
+        }
+
+        [data-theme="dark"] {
+            --tw-prose-code: #f9fafb;
+            --tw-prose-hr: #374151;
+            --tw-prose-links: #fff;
+            --tw-prose-headings: #fff;
+            --tw-prose-quotes: #f3f4f6;
+            --tw-prose-counters: #9ca3af;
+            --page-bg: rgba(52,53,65);
+            --page-text: #fff;
+            --conversation-odd-bg: rgb(68,70,84);
+            --meta-title: #959faa;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        ::-webkit-scrollbar {
+            height: 1rem;
+            width: .5rem
+        }
+
+        ::-webkit-scrollbar:horizontal {
+            height: .5rem;
+            width: 1rem
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+            border-radius: 9999px
+        }
+
+        ::-webkit-scrollbar-thumb {
+            --tw-border-opacity: 1;
+            background-color: rgba(217,217,227,.8);
+            border-color: rgba(255,255,255,var(--tw-border-opacity));
+            border-radius: 9999px;
+            border-width: 1px
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgba(236,236,241,var(--tw-bg-opacity))
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            --tw-bg-opacity: 1;
+            background-color: rgba(86,88,105,var(--tw-bg-opacity))
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgba(172,172,190,var(--tw-bg-opacity))
+        }
+
+        @media (min-width: 768px) {
+            .scrollbar-trigger ::-webkit-scrollbar-thumb {
+                visibility:hidden
+            }
+
+            .scrollbar-trigger:hover ::-webkit-scrollbar-thumb {
+                visibility: visible
+            }
+        }
+
+        body {
+            font-family: Söhne,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--page-text);
+            background-color: var(--page-bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        [data-theme="light"] .sun {
+            display: none;
+        }
+
+        [data-theme="dark"] .moon {
+            display: none;
+        }
+
+        .toggle {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+        }
+
+        .metadata_container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 8px;
+            padding-left: 1rem;
+        }
+
+        .metadata_item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-radius: 16px;
+            padding: 4px 0.5rem;
+        }
+
+        .metadata_item:hover {
+            background-color: rgba(0,0,0,.1);
+        }
+
+        .metadata_item > div:first-child {
+            flex: 0 1 100px;
+            color: var(--meta-title);
+        }
+
+        .metadata_item > div:last-child {
+            flex: 1;
+        }
+
+        a {
+            color: var(--tw-prose-links);
+            font-size: 0.8rem;
+            text-decoration-line: underline;
+            text-underline-offset: 2px;
+        }
+
+        .conversation-content > p:first-child,
+        ol:first-child {
+            margin-top: 0;
+        }
+
+        p>code, li>code {
+            color: var(--tw-prose-code);
+            font-weight: 600;
+            font-size: .875em;
+        }
+
+        p>code::before,
+        p>code::after,
+        li>code::before,
+        li>code::after {
+            content: "`";
+        }
+
+        hr {
+            width: 100%;
+            height: 0;
+            border: 1px solid var(--tw-prose-hr);
+            margin-bottom: 1em;
+            margin-top: 1em;
+        }
+
+        pre {
+            color: #ffffff;
+            background-color: #000000;
+            overflow-x: auto;
+            margin: 0 0 1rem 0;
+            border-radius: 0.375rem;
+        }
+
+        pre>code {
+            font-family: Söhne Mono, Monaco, Andale Mono, Ubuntu Mono, monospace !important;
+            font-weight: 400;
+            font-size: .875em;
+            line-height: 1.7142857;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--tw-prose-headings);
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 2.25em;
+            font-weight: 600;
+            line-height: 1.1111111;
+            margin-bottom: 0.8888889em;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            line-height: 1.3333333;
+            margin-bottom: 1em;
+            margin-top: 2em;
+        }
+
+        h3 {
+            font-size: 1.25em;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: .6em;
+            margin-top: 1.6em;
+        }
+
+        h4 {
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: .5em;
+            margin-top: 1.5em
+        }
+
+        h3,h4 {
+            margin-bottom: .5rem;
+            margin-top: 1rem;
+        }
+
+        h5 {
+            font-weight: 600;
+        }
+
+        blockquote {
+            border-left: 2px solid rgba(142,142,160,1);
+            color: var(--tw-prose-quotes);
+            font-style: italic;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 1rem;
+            margin: 1.6em 0;
+            padding-left: 1em;
+            quotes: "\201C""\201D""\2018""\2019";
+        }
+
+        blockquote p:first-of-type:before {
+            content: open-quote;
+        }
+
+        blockquote p:last-of-type:after {
+            content: close-quote;
+        }
+
+        ol, ul {
+            padding-left: 1.1rem;
+        }
+
+        ::marker {
+            color: var(--tw-prose-counters);
+            font-weight: 400;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0;
+            table-layout: auto;
+            text-align: left;
+            font-size: .875em;
+            line-height: 1.7142857;
+        }
+
+        table * {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #d9d9e3;
+        }
+
+        table thead {
+            border-bottom-color: var(--th-boarders);
+            border-bottom-width: 1px;
+        }
+
+        table th {
+            background-color: rgba(236,236,241,.2);
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-width: 1px;
+            padding: 0.25rem 0.75rem;
+        }
+
+        table th:first-child {
+            border-top-left-radius: 0.375rem;
+        }
+
+        table th:last-child {
+            border-right-width: 1px;
+            border-top-right-radius: 0.375rem;
+        }
+
+        table tbody tr {
+            border-bottom-color: var(--td-boarders);
+            border-bottom-width: 1px;
+        }
+
+        table tbody tr:last-child {
+            border-bottom-width: 0;
+        }
+
+        table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 0.375rem;
+        }
+
+        table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 0.375rem;
+        }
+
+        table td {
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            padding: 0.25rem 0.75rem;
+        }
+
+        table td:last-child {
+            border-right-width: 1px;
+        }
+
+        [type=checkbox], [type=radio] {
+            accent-color: #2563eb;
+        }
+
+        .conversation {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 1rem;
+        }
+
+        .conversation-header {
+            margin-bottom: 1rem;
+        }
+
+        .conversation-header h1 {
+            margin: 0;
+        }
+
+        .conversation-header h1 a {
+            font-size: 1.5rem;
+        }
+
+        .conversation-header .conversation-export {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .conversation-header p {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .conversation-item {
+            display: flex;
+            position: relative;
+            padding: 1rem;
+            border-left: 1px solid rgba(0,0,0,.1);
+            border-right: 1px solid rgba(0,0,0,.1);
+            border-bottom: 1px solid rgba(0,0,0,.1);
+        }
+
+        .conversation-item:first-of-type {
+            border-top: 1px solid rgba(0,0,0,.1);
+        }
+
+        .conversation-item:nth-child(odd) {
+            background-color: var(--conversation-odd-bg);
+        }
+
+        .author {
+            display: flex;
+            flex: 0 0 30px;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 0.125rem;
+            margin-right: 1rem;
+            overflow: hidden;
+        }
+
+        .author svg {
+            color: #fff;
+            width: 22px;
+            height: 22px;
+        }
+
+        .author img {
+            content: url(data:image/png;base64,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);
+            width: 100%;
+            height: 100%;
+        }
+
+        .author.GPT-3 {
+            background-color: rgb(16, 163, 127);
+        }
+
+        .author.GPT-4 {
+            background-color: black;
+        }
+
+        .conversation-content-wrapper {
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            flex: 1 1 auto;
+            flex-direction: column;
+        }
+
+        .conversation-content {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .conversation-content p {
+            white-space: pre-wrap;
+            line-height: 28px;
+        }
+
+        .conversation-content img, .conversation-content video {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 2em;
+            margin-top: 2em;
+        }
+
+        .time {
+            position: absolute;
+            right: 8px;
+            bottom: 0;
+            font-size: 0.8rem;
+            color: #acacbe
+        }
+    </style>
+</head>
+
+<body>
+    <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <symbol id="chatgpt" viewBox="0 0 41 41">
+            <path d="M37.5324 16.8707C37.9808 15.5241 38.1363 14.0974 37.9886 12.6859C37.8409 11.2744 37.3934 9.91076 36.676 8.68622C35.6126 6.83404 33.9882 5.3676 32.0373 4.4985C30.0864 3.62941 27.9098 3.40259 25.8215 3.85078C24.8796 2.7893 23.7219 1.94125 22.4257 1.36341C21.1295 0.785575 19.7249 0.491269 18.3058 0.500197C16.1708 0.495044 14.0893 1.16803 12.3614 2.42214C10.6335 3.67624 9.34853 5.44666 8.6917 7.47815C7.30085 7.76286 5.98686 8.3414 4.8377 9.17505C3.68854 10.0087 2.73073 11.0782 2.02839 12.312C0.956464 14.1591 0.498905 16.2988 0.721698 18.4228C0.944492 20.5467 1.83612 22.5449 3.268 24.1293C2.81966 25.4759 2.66413 26.9026 2.81182 28.3141C2.95951 29.7256 3.40701 31.0892 4.12437 32.3138C5.18791 34.1659 6.8123 35.6322 8.76321 36.5013C10.7141 37.3704 12.8907 37.5973 14.9789 37.1492C15.9208 38.2107 17.0786 39.0587 18.3747 39.6366C19.6709 40.2144 21.0755 40.5087 22.4946 40.4998C24.6307 40.5054 26.7133 39.8321 28.4418 38.5772C30.1704 37.3223 31.4556 35.5506 32.1119 33.5179C33.5027 33.2332 34.8167 32.6547 35.9659 31.821C37.115 30.9874 38.0728 29.9178 38.7752 28.684C39.8458 26.8371 40.3023 24.6979 40.0789 22.5748C39.8556 20.4517 38.9639 18.4544 37.5324 16.8707ZM22.4978 37.8849C20.7443 37.8874 19.0459 37.2733 17.6994 36.1501C17.7601 36.117 17.8666 36.0586 17.936 36.0161L25.9004 31.4156C26.1003 31.3019 26.2663 31.137 26.3813 30.9378C26.4964 30.7386 26.5563 30.5124 26.5549 30.2825V19.0542L29.9213 20.998C29.9389 21.0068 29.9541 21.0198 29.9656 21.0359C29.977 21.052 29.9842 21.0707 29.9867 21.0902V30.3889C29.9842 32.375 29.1946 34.2791 27.7909 35.6841C26.3872 37.0892 24.4838 37.8806 22.4978 37.8849ZM6.39227 31.0064C5.51397 29.4888 5.19742 27.7107 5.49804 25.9832C5.55718 26.0187 5.66048 26.0818 5.73461 26.1244L13.699 30.7248C13.8975 30.8408 14.1233 30.902 14.3532 30.902C14.583 30.902 14.8088 30.8408 15.0073 30.7248L24.731 25.1103V28.9979C24.7321 29.0177 24.7283 29.0376 24.7199 29.0556C24.7115 29.0736 24.6988 29.0893 24.6829 29.1012L16.6317 33.7497C14.9096 34.7416 12.8643 35.0097 10.9447 34.4954C9.02506 33.9811 7.38785 32.7263 6.39227 31.0064ZM4.29707 13.6194C5.17156 12.0998 6.55279 10.9364 8.19885 10.3327C8.19885 10.4013 8.19491 10.5228 8.19491 10.6071V19.808C8.19351 20.0378 8.25334 20.2638 8.36823 20.4629C8.48312 20.6619 8.64893 20.8267 8.84863 20.9404L18.5723 26.5542L15.206 28.4979C15.1894 28.5089 15.1703 28.5155 15.1505 28.5173C15.1307 28.5191 15.1107 28.516 15.0924 28.5082L7.04046 23.8557C5.32135 22.8601 4.06716 21.2235 3.55289 19.3046C3.03862 17.3858 3.30624 15.3413 4.29707 13.6194ZM31.955 20.0556L22.2312 14.4411L25.5976 12.4981C25.6142 12.4872 25.6333 12.4805 25.6531 12.4787C25.6729 12.4769 25.6928 12.4801 25.7111 12.4879L33.7631 17.1364C34.9967 17.849 36.0017 18.8982 36.6606 20.1613C37.3194 21.4244 37.6047 22.849 37.4832 24.2684C37.3617 25.6878 36.8382 27.0432 35.9743 28.1759C35.1103 29.3086 33.9415 30.1717 32.6047 30.6641C32.6047 30.5947 32.6047 30.4733 32.6047 30.3889V21.188C32.6066 20.9586 32.5474 20.7328 32.4332 20.5338C32.319 20.3348 32.154 20.1698 31.955 20.0556ZM35.3055 15.0128C35.2464 14.9765 35.1431 14.9142 35.069 14.8717L27.1045 10.2712C26.906 10.1554 26.6803 10.0943 26.4504 10.0943C26.2206 10.0943 25.9948 10.1554 25.7963 10.2712L16.0726 15.8858V11.9982C16.0715 11.9783 16.0753 11.9585 16.0837 11.9405C16.0921 11.9225 16.1048 11.9068 16.1207 11.8949L24.1719 7.25025C25.4053 6.53903 26.8158 6.19376 28.2383 6.25482C29.6608 6.31589 31.0364 6.78077 32.2044 7.59508C33.3723 8.40939 34.2842 9.53945 34.8334 10.8531C35.3826 12.1667 35.5464 13.6095 35.3055 15.0128ZM14.2424 21.9419L10.8752 19.9981C10.8576 19.9893 10.8423 19.9763 10.8309 19.9602C10.8195 19.9441 10.8122 19.9254 10.8098 19.9058V10.6071C10.8107 9.18295 11.2173 7.78848 11.9819 6.58696C12.7466 5.38544 13.8377 4.42659 15.1275 3.82264C16.4173 3.21869 17.8524 2.99464 19.2649 3.1767C20.6775 3.35876 22.0089 3.93941 23.1034 4.85067C23.0427 4.88379 22.937 4.94215 22.8668 4.98473L14.9024 9.58517C14.7025 9.69878 14.5366 9.86356 14.4215 10.0626C14.3065 10.2616 14.2466 10.4877 14.2479 10.7175L14.2424 21.9419ZM16.071 17.9991L20.4018 15.4978L24.7325 17.9975V22.9985L20.4018 25.4983L16.071 22.9985V17.9991Z" fill="currentColor"></path>
+        </symbol>
+    </svg>
+    <div class="conversation">
+        <div class="conversation-header">
+            <h1>
+                <a href="https://chat.openai.com/chat/88dc2653-24bb-45f8-8a65-e1964ab74996" target="_blank" rel="noopener noreferrer">Twitter動画高画質テクニック</a>
+                <button class="toggle">
+                    <svg class="sun" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="moon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </h1>
+            <div class="conversation-export">
+                <p>Exported by
+                <a href="https://github.com/pionxzh/chatgpt-exporter">ChatGPT Exporter</a>
+                at 2023-04-10T02:42:58.479Z</p>
+            </div>
+            
+        </div>
+
+        
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>twitterに高画質の動画をあげるためのテクニックを教えてください</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Twitterでは、高画質の動画をアップロードするためにいくつかのテクニックがあります。以下に挙げるテクニックを試してみてください：</p>
+<ol>
+<li>
+<p>動画の圧縮：動画をアップロードする前に、圧縮ソフトウェア（HandBrakeなど）を使用して、動画を圧縮してください。ファイルサイズが小さくなると、アップロードの速度が上がり、動画の品質も向上します。</p>
+</li>
+<li>
+<p>Twitterの動画仕様を確認：Twitterの動画仕様に準拠していることを確認してください。以下は、2021年9月時点のTwitterの動画仕様です。</p>
+</li>
+</ol>
+<ul>
+<li>ファイル形式: MP4またはMOV</li>
+<li>ビデオコーデック: H.264</li>
+<li>オーディオコーデック: AAC</li>
+<li>最大解像度: 1920x1200</li>
+<li>最大ビデオビットレート: 25 Mbps</li>
+<li>最大フレームレート: 60 FPS</li>
+<li>最大ファイルサイズ: 512 MB</li>
+</ul>
+<ol start="3">
+<li>
+<p>高画質の設定を選択：動画編集ソフトウェアを使用して、動画をエクスポートする際に、高画質の設定を選択してください。通常、これには、高いビットレートと解像度が含まれます。</p>
+</li>
+<li>
+<p>長い動画の場合は分割：Twitterでは、動画の長さが2分20秒を超える場合、動画を分割する必要があります。動画編集ソフトウェアを使って、動画を適切な長さにカットし、それぞれの部分を個別にアップロードしてください。</p>
+</li>
+<li>
+<p>データ通信量を節約：スマートフォンやタブレットから動画をアップロードする場合は、Wi-Fi接続を利用することで、データ通信量を節約できます。これにより、アップロード速度が向上し、動画の品質も保たれます。</p>
+</li>
+<li>
+<p>Twitter Media Studioの利用：Twitter Media Studioは、動画の品質を向上させるツールを提供しています。これにより、動画のアップロード、管理、解析が簡単になります。</p>
+</li>
+</ol>
+<p>これらのテクニックを活用して、Twitterに高画質の動画をアップロードしてください。ただし、Twitter上での動画品質は、視聴者のインターネット速度やデバイスにも左右されるため、すべてのユーザーに対して同じ品質を保証することはでき</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>続きを</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>ません。しかしこれらのテクニックを適用することで、できるだけ最適な動画品質を提供することができます。</p>
+<ol start="7">
+<li>
+<p>サムネイル画像の最適化: 動画のサムネイル画像は、視聴者が動画をクリックするかどうかに影響を与えます。鮮明で魅力的なサムネイル画像を選択し、必要に応じて編集して最適化してください。</p>
+</li>
+<li>
+<p>動画の編集: 動画の冒頭部分は、視聴者の注意を引くために重要です。冒頭に興味深いシーンや情報を入れることで、視聴者が動画を最後まで見る確率が上がります。また、不要な部分をカットして動画を短くし、視聴者が飽きることなく最後まで見られるようにすることも重要です。</p>
+</li>
+<li>
+<p>デバイスの最適化: 視聴者が様々なデバイスで動画を視聴することを考慮して、動画がスマートフォン、タブレット、デスクトップなどの異なるデバイスで適切に表示されるように最適化してください。これには、アスペクト比や解像度の調整が含まれます。</p>
+</li>
+<li>
+<p>動画の説明やハッシュタグの使用: 動画の説明には、動画の内容を正確に表すキーワードやフレーズを使用してください。また、関連するハッシュタグを使うことで、動画が広く拡散される可能性が高まります。</p>
+</li>
+</ol>
+<p>これらのテクニックを駆使して、Twitterで高画質の動画をアップロードし、多くの人に届けましょう。視聴者のエンゲージメントが向上することで、動画の拡散効果も高まります。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>動画をあげると自動的にエンコードされてしまっているようです。
+ブロックノイズが乗ります。2分20秒以内にはしています。
+mp4、 H.264、60fpsです</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Twitterでは、アップロードされた動画は自動的にエンコードされ、最適化されます。しかし、このプロセスは時々、ブロックノイズや品質の低下を引き起こすことがあります。以下の方法で、エンコードによる品質低下を最小限に抑えることができます。</p>
+<ol>
+<li>
+<p>ビットレートを調整: 高いビットレートでエンコードされた動画は、ブロックノイズが少なくなります。ただし、ビットレートが高すぎると、ファイルサイズが大きくなり、アップロードに時間がかかる場合があります。Twitterの最大ビデオビットレートは25 Mbpsですが、8 Mbpsから12 Mbpsの範囲で調整してみてください。</p>
+</li>
+<li>
+<p>定数レートファクター（CRF）を調整: 動画をエンコードする際に、定数レートファクター（CRF）を調整することで、品質とファイルサイズのバランスを最適化できます。一般的に、CRF値が低いほど品質が高くなりますが、ファイルサイズも大きくなります。CRF値を18〜23の範囲で試してみてください。</p>
+</li>
+<li>
+<p>フレームレートを調整: 60fpsではなく、30fpsでエンコードしてみてください。これにより、動画の品質が向上し、ブロックノイズが軽減される可能性があります。</p>
+</li>
+<li>
+<p>エンコード設定の最適化: 動画エンコーダー（HandBrakeなど）でエンコード設定を最適化してみてください。エンコードのプリセットを「Slow」または「Slower」に設定することで、品質が向上する可能性があります。ただし、エンコード時間が長くなることがありますので、注意してください。</p>
+</li>
+<li>
+<p>デノイズフィルターの使用: 動画編集ソフトウェアやエンコーダーで、デノイズフィルターを使用して、ブロックノイズを軽減することができます。ただし、デノイズフィルターを過度に使用すると、動画のディテールが失われる場合があります。</p>
+</li>
+</ol>
+<p>これらの方法を試して、Twitterでの動画エンコードによる品質低下を最小限に抑えてください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Handbrakeは使ったことがないです。
+aviutlを使っていますが、何か違いがありますか？</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>HandBrakeとAviUtlはどちらも動画編集・エンコードソフトウェアですが、いくつかの違いがあります。</p>
+<ol>
+<li>
+<p>プラットフォーム: HandBrakeはクロスプラットフォームであり、Windows、Mac、Linuxで使用できます。一方、AviUtlは主にWindows向けのソフトウェアです。</p>
+</li>
+<li>
+<p>インターフェース: HandBrakeはシンプルで直感的なインターフェースを持っており、初心者にも使いやすいです。AviUtlは日本製のソフトウェアであり、日本語ユーザーにとっては使いやすいインターフェースを提供していますが、英語など他の言語に対応しているわけではありません。</p>
+</li>
+<li>
+<p>機能とプラグイン: AviUtlは拡張編集プラグインなど、さまざまなプラグインを利用して機能を追加できるため、柔軟性があります。一方、HandBrakeは主に動画変換・エンコードに特化しており、その機能はシンプルです。</p>
+</li>
+<li>
+<p>エンコードオプション: HandBrakeは多くのエンコードオプションを提供しており、H.264、H.265、VP8、VP9などのビデオコーデックに対応しています。AviUtlもエンコードオプションを提供していますが、プラグインを導入することで、より多くのコーデックやオプションを利用できるようになります。</p>
+</li>
+</ol>
+<p>どちらのソフトウェアを選択するかは、個人の好みや作業環境、目的によって異なります。AviUtlを使用している場合は、エンコード設定を最適化して、Twitterでの動画品質を向上させることができます。</p>
+<p>AviUtlを使用して品質を向上させるためには、以下の手順を試してみてください。</p>
+<ol>
+<li>
+<p>高いビットレートでエンコード: ビットレートを上げることで、動画品質が向上します。ただし、ファイルサイズも大きくなるため、バランスを見ながら調整してください。</p>
+</li>
+<li>
+<p>フレームレートの調整: 60fpsではなく、30fpsでエンコードすることで、動画品質が向上し、ブロックノイズが軽減される可能性があります。</p>
+</li>
+<li>
+<p>プラグインを使用してエンコード設定を最適化: AviUtlでは、プラグインを利用して</p>
+</li>
+</ol>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>続きを</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>エンコード設定を最適化できます。以下の手順を試してみてください。</p>
+<ol>
+<li>
+<p>エンコーダープラグインの導入: AviUtlに対応したエンコーダープラグイン（x264やx265など）を導入して、さまざまなコーデックやエンコードオプションを利用できるようにします。</p>
+</li>
+<li>
+<p>品質設定の調整: エンコーダープラグインの設定で、品質を向上させるオプションを選択してください。たとえば、x264プラグインでは、プリセットを「Slower」や「Very Slow」に設定して、品質を向上させることができます。ただし、エンコード時間が長くなることがありますので、注意してください。</p>
+</li>
+<li>
+<p>デノイズフィルターの使用: 動画編集ソフトウェアやエンコーダーで、デノイズフィルターを使用して、ブロックノイズを軽減することができます。ただし、デノイズフィルターを過度に使用すると、動画のディテールが失われる場合があります。</p>
+</li>
+<li>
+<p>プラグインを使用して動画を最適化: 他のAviUtlプラグインを使用して、動画を最適化しましょう。例えば、リサイズフィルターやカラーコレクションフィルターなど、動画の品質や見た目を向上させるプラグインがあります。</p>
+</li>
+</ol>
+<p>これらの手順を試して、AviUtlでエンコードされた動画の品質を向上させ、Twitterでの表示品質を改善してください。動画品質が向上すると、視聴者のエンゲージメントも向上し、動画の拡散効果が高まることが期待できます。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Handbrakeを使ってみます。最適な設定を教えてください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>HandBrakeを使用してTwitter向けの動画をエンコードする場合、以下の設定が最適とされています。</p>
+<ol>
+<li>
+<p>フォーマット: MP4を選択してください。これは、Twitterでサポートされている主要な動画フォーマットです。</p>
+</li>
+<li>
+<p>コーデック: H.264（x264）を選択してください。これは広く互換性があり、品質と圧縮率が優れています。</p>
+</li>
+<li>
+<p>フレームレート: Twitterは30fps（またはそれ以下）を推奨しています。60fpsの動画をアップロードすることもできますが、30fpsでエンコードすると、品質が向上し、ブロックノイズが軽減される可能性があります。</p>
+</li>
+<li>
+<p>解像度: Twitterの最大解像度は1920x1200（横）または1200x1900（縦）です。解像度をこの範囲内に設定してください。ただし、ファイルサイズを抑えるために、1280x720（HD）または960x540（qHD）などの解像度を選択することも検討してください。</p>
+</li>
+<li>
+<p>ビットレート: 高いビットレートでエンコードすると、動画品質が向上しますが、ファイルサイズも大きくなります。Twitterの最大ビデオビットレートは25 Mbpsですが、8 Mbpsから12 Mbpsの範囲で調整してみてください。</p>
+</li>
+<li>
+<p>定数レートファクター（CRF）: CRF値を18〜23の範囲で設定して、品質とファイルサイズのバランスを最適化してください。CRF値が低いほど品質が高くなりますが、ファイルサイズも大きくなります。</p>
+</li>
+<li>
+<p>プリセット: エンコード速度と品質のバランスを調整するために、プリセットを「Medium」、「Slow」、または「Slower」に設定してみてください。プリセットが遅いほど品質が向上しますが、エンコード時間が長くなります。</p>
+</li>
+<li>
+<p>オーディオ設定: オーディオコーデックにはAACを選択し、ビットレートは128 Kbpsから160 Kbpsの範囲で設定してください。</p>
+</li>
+</ol>
+<p>これらの設定を適用して、HandBrakeを使用してTwitter向けに動画をエンコードしてください。動画品質が向上することで、視聴者のエンゲージメントも向上し、動画の拡散効果が高まることが期待できます。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>固定フレームレートと可変フレームレートはどうですか？</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>固定フレームレート（Constant Frame Rate, CFR）と可変フレームレート（Variable Frame Rate, VFR）は、動画エンコード時にフレームレートを処理する方法が異なります。それぞれの特徴と利点、欠点を以下に説明します。</p>
+<p>固定フレームレート (CFR)：</p>
+<ul>
+<li>CFRでは、動画全体で一定のフレームレートが維持されます。</li>
+<li>編集や再エンコードが容易であり、ほとんどのプレーヤーと互換性があります。</li>
+<li>フレームレートが一定なため、音声と動画の同期が保たれやすくなります。</li>
+<li>比較的ファイルサイズが大きくなる場合があります。</li>
+</ul>
+<p>可変フレームレート (VFR)：</p>
+<ul>
+<li>VFRでは、動画のシーンに応じてフレームレートが変化します。動きが少ないシーンではフレームレートが低く、動きが多いシーンではフレームレートが高くなります。</li>
+<li>動画の品質を維持しながら、ファイルサイズを削減できる場合があります。</li>
+<li>一部の動画プレーヤーや編集ソフトウェアとの互換性が低く、再エンコードや編集時に問題が発生する可能性があります。</li>
+<li>音声と動画の同期が維持されない場合があります。</li>
+</ul>
+<p>Twitterで動画をアップロードする場合は、固定フレームレート（CFR）を選択することをお勧めします。CFRは互換性が高く、音声と動画の同期が保たれやすいため、視聴者にとって快適な視聴体験が提供されます。また、動画編集や再エンコードが容易になります。可変フレームレート（VFR）はファイルサイズを削減できる利点がありますが、互換性の問題や音声同期の問題が発生する可能性があるため、注意が必要です。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>ビットレートが正直あまりわかっていないのですが、ビットレートについて詳しく教えてもらえますか？</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>ビットレートは、動画や音声データの伝送や圧縮に関連する重要な概念です。ビットレートは、単位時間あたりのデータ量を表し、通常は「ビット/秒」（bps）または「キロビット/秒」（kbps）などの単位で表現されます。ビットレートが高いほど、単位時間あたりに伝送されるデータ量が多くなり、動画や音声の品質が向上します。</p>
+<p>ビットレートは、動画エンコード時に次のような役割を果たします。</p>
+<ol>
+<li>
+<p>動画品質: ビットレートが高いほど、動画の品質が向上します。高いビットレートでは、動画の詳細が維持され、圧縮アーティファクト（ブロックノイズやモザイクなど）が減少します。ただし、ビットレートが極端に高い場合、視聴者にとって目に見える品質向上が限定的になることがあります。</p>
+</li>
+<li>
+<p>ファイルサイズ: ビットレートが高いほど、動画のファイルサイズが大きくなります。これは、単位時間あたりのデータ量が多いためです。ファイルサイズが大きいと、アップロードやダウンロードに時間がかかり、ストレージスペースも消費されます。</p>
+</li>
+<li>
+<p>伝送速度: ビットレートが高いほど、伝送速度が速くなる必要があります。例えば、ストリーミング動画の場合、ビットレートが高い動画をスムーズに再生するには、インターネット回線の速度が速くなければなりません。</p>
+</li>
+</ol>
+<p>ビットレートを設定する際は、動画品質とファイルサイズ、伝送速度のバランスを考慮する必要があります。動画品質を向上させつつ、ファイルサイズや伝送速度の制約に対応できるように、適切なビットレートを選択することが重要です。また、再生環境やターゲットデバイス、インターネット接続速度なども考慮して、最適なビットレートを決定してください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>プリセットが提示された内容と全然違うものしかないです</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>申し訳ありません。HandBrakeのバージョンによっては、プリセットの名称が異なることがあります。以下の一般的なプリセットを参考にして、お使いのHandBrakeで最適な設定を見つけてください。</p>
+<ol>
+<li>Ultrafast（ウルトラファスト）: エンコード速度が非常に速いですが、品質は低く、ファイルサイズが大きくなります。</li>
+<li>Superfast（スーパーファスト）: エンコード速度が速いですが、品質はやや低く、ファイルサイズが大きいです。</li>
+<li>Veryfast（ベリーファスト）: エンコード速度が速く、品質は中程度、ファイルサイズは中程度です。</li>
+<li>Faster（ファスター）: エンコード速度がやや速いですが、品質は中程度、ファイルサイズは中程度です。</li>
+<li>Fast（ファスト）: エンコード速度が中程度で、品質はやや高く、ファイルサイズはやや小さいです。</li>
+<li>Medium（ミディアム）: エンコード速度と品質のバランスが良く、ファイルサイズも適切です。</li>
+<li>Slow（スロー）: エンコード速度がやや遅いですが、品質は高く、ファイルサイズは小さいです。</li>
+<li>Slower（スローワー）: エンコード速度が遅いですが、品質は非常に高く、ファイルサイズは小さいです。</li>
+<li>Veryslow（ベリースロー）: エンコード速度が非常に遅いですが、品質は最も高く、ファイルサイズは最も小さいです。</li>
+</ol>
+<p>お使いのHandBrakeに表示されているプリセットの中から、エンコード速度と品質のバランスが良いものを選択してください。速度と品質のバランスが取れたプリセット（例えば、「Medium」や「Slow」）を選択することで、Twitterでの動画品質が向上し、視聴者のエンゲージメントも向上することが期待できます。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Super HQ 720p30 Surroundというプリセットをえらんでみました</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>「Super HQ 720p30 Surround」プリセットは、高品質な720p（1280x720ピクセル）の動画を生成するための設定が含まれています。30fpsのフレームレートが適用され、動画の品質が向上するために、ビットレートが適切に設定されます。また、サラウンド音声の設定が含まれています。</p>
+<p>このプリセットを使用すると、Twitterでの動画品質が向上し、視聴者に良い印象を与えることが期待できます。ただし、このプリセットでは動画ファイルサイズが大きくなる可能性があるため、アップロードや再生に影響が出ることがあります。</p>
+<p>もしファイルサイズが大きすぎる場合、以下の手順で設定を調整してください。</p>
+<ol>
+<li>
+<p>ビットレートを下げる: ビットレートを下げることで、ファイルサイズを削減できますが、動画品質が低下する可能性があります。適切なバランスを見つけるために、試行錯誤が必要です。</p>
+</li>
+<li>
+<p>オーディオ設定を調整する: オーディオビットレートを下げたり、ステレオに変更することで、ファイルサイズを削減できます。</p>
+</li>
+<li>
+<p>エンコードプリセットを変更する: より高速なエンコードプリセットを選択することで、エンコード速度が向上し、ファイルサイズが削減される場合があります。ただし、動画品質が低下する可能性があるため、注意が必要です。</p>
+</li>
+</ol>
+<p>プリセットを選択した後、動画のプレビューをチェックして品質とファイルサイズが適切であることを確認してください。必要に応じて、設定を調整して最適な結果を得ることが重要です。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>以下にしあｍした
+H.264
+720p
+CRF:22
+AAC: 160kbps</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>選択された設定は、Twitterで動画を共有する際に良いバランスを提供します。</p>
+<ol>
+<li>
+<p>H.264: Twitterが推奨する動画コーデックであり、高い互換性と効率的な圧縮を提供します。</p>
+</li>
+<li>
+<p>720p: 動画の解像度が1280x720ピクセルで、一般的なHD解像度です。ファイルサイズが適切でありながら、良好な視聴体験を提供します。</p>
+</li>
+<li>
+<p>CRF 22: CRF（Constant Rate Factor）は、動画品質と圧縮効率のバランスを調整するための設定です。CRF 22は、適度な品質とファイルサイズを提供します。CRF値が小さいほど品質が高く、ファイルサイズが大きくなります。逆に、CRF値が大きいほど品質が低く、ファイルサイズが小さくなります。</p>
+</li>
+<li>
+<p>AAC 160kbps: 音声コーデックとしてAACを選択し、ビットレートが160kbpsに設定されています。これは、適度な音声品質とファイルサイズを提供する一般的な設定です。</p>
+</li>
+</ol>
+<p>これらの設定を適用してエンコードされた動画は、Twitterでの共有に適しています。動画品質とファイルサイズのバランスが良く、多くの視聴者にとって快適な視聴体験が提供されます。必要に応じて、CRF値や音声ビットレートを調整して、品質とファイルサイズの最適なバランスを見つけてください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>ビットレートが4Mbps程度になってしまいました</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Twitterの動画の推奨ビットレートは、最大5Mbps（720p）です。選択された設定で4Mbps程度のビットレートになっている場合、まだTwitterの制限内であるため問題ないと言えます。</p>
+<p>ただし、ファイルサイズをさらに削減したい場合は、次の方法で設定を調整できます。</p>
+<ol>
+<li>
+<p>CRF値を上げる: CRF値を上げることで、圧縮率が上がり、ビットレートが低くなります。ただし、動画品質が低下することもありますので、適切なバランスを見つけるために試行錯誤が必要です。CRF値を24〜28の範囲で試してみてください。</p>
+</li>
+<li>
+<p>プリセットを変更する: エンコードプリセットを「Slow」や「Slower」に変更することで、圧縮効率が向上し、ビットレートが低くなることがあります。ただし、エンコード速度が遅くなるため、時間がかかることがあります。</p>
+</li>
+<li>
+<p>解像度を下げる: 720pから480p（854x480ピクセル）に解像度を下げることで、ビットレートが低くなります。ただし、動画品質が低下するため、視聴体験に影響が出ることがあります。</p>
+</li>
+</ol>
+<p>設定を調整した後、動画のプレビューをチェックして品質とファイルサイズが適切であることを確認してください。最適な結果を得るために、試行錯誤が必要です。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>プリセットはVery Slowになっていました。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>「Very Slow」プリセットは、エンコード速度が非常に遅いものの、動画品質が最も高く、ファイルサイズが最も小さい設定です。このプリセットを使用すると、ビットレートが低くなり、ファイルサイズが削減されることが期待できます。ただし、エンコードにかかる時間が長くなることがあります。</p>
+<p>既に「Very Slow」プリセットを使用している場合、CRF値や解像度を調整して、ビットレートをさらに低くすることができます。ただし、動画品質が低下する可能性があるため、注意が必要です。</p>
+<ol>
+<li>
+<p>CRF値を上げる: CRF値を上げることで、圧縮率が上がり、ビットレートが低くなります。CRF値を24〜28の範囲で試してみてください。ただし、動画品質が低下することもありますので、適切なバランスを見つけるために試行錯誤が必要です。</p>
+</li>
+<li>
+<p>解像度を下げる: 720pから480p（854x480ピクセル）に解像度を下げることで、ビットレートが低くなります。ただし、動画品質が低下するため、視聴体験に影響が出ることがあります。</p>
+</li>
+</ol>
+<p>ビットレートが4Mbps程度であれば、Twitterの制限内ですので、特に問題はありません。ただし、ファイルサイズをさらに削減したい場合は、上記の方法で設定を調整してみてください。最適な結果を得るために、試行錯誤が必要です。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>追加のオプションで以下が勝手にはいっていました
+ref=5:bframes=5</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>追加のオプションで指定された<code>ref=5:bframes=5</code>は、H.264エンコーディングの高度な設定です。これらの設定は、動画品質と圧縮効率を向上させることができますが、エンコード速度に影響を与える場合があります。</p>
+<ol>
+<li>
+<p><code>ref=5</code>: これは、参照フレーム（reference frames）の数を指定しています。参照フレームは、エンコーダが以前のフレームを参照して新しいフレームを生成する際に使用されます。参照フレーム数が多いほど、動画品質が向上し、圧縮効率が高くなりますが、エンコード速度が遅くなることがあります。</p>
+</li>
+<li>
+<p><code>bframes=5</code>: これは、B-フレーム（bi-predictive frames）の最大数を指定しています。B-フレームは、前後のフレームから予測される中間フレームです。B-フレーム数が多いほど、圧縮効率が高くなりますが、エンコード速度が遅くなることがあります。</p>
+</li>
+</ol>
+<p>これらの設定が自動的に追加されている場合、動画品質と圧縮効率が向上することが期待できますが、エンコード速度が遅くなる可能性があります。特にエンコード速度が問題でない場合は、この設定をそのまま使用しても問題ありません。</p>
+<p>ただし、エンコード速度が遅すぎると感じる場合は、参照フレーム数（<code>ref</code>）やB-フレーム数（<code>bframes</code>）を減らすことで、エンコード速度を向上させることができます。ただし、動画品質や圧縮効率が低下する可能性があるため、注意が必要です。適切なバランスを見つけるために試行錯誤が必要です。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>CRF18で6Mbps程度でした</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>CRF 18で6Mbps程度のビットレートになった場合、動画品質はかなり高いと言えます。ただし、Twitterの推奨ビットレートは最大5Mbps（720p）ですので、この設定ではファイルサイズが大きすぎる可能性があります。これによって、アップロードや再生に影響が出ることがあります。</p>
+<p>CRF値を上げることで、ビットレートを低くし、ファイルサイズを削減できます。CRF値を20〜24の範囲で試してみてください。これにより、ビットレートが5Mbps以下になる可能性があります。ただし、動画品質が低下することもありますので、適切なバランスを見つけるために試行錯誤が必要です。</p>
+<p>また、追加のオプションで指定された<code>ref=5:bframes=5</code>もエンコード速度と圧縮効率に影響を与えるため、必要に応じて調整してください。</p>
+<p>最適な設定を見つけるために、複数のCRF値やオプション設定でエンコードを試して、動画品質とファイルサイズが適切であることを確認してください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>4Mbpsでもだめそうでした</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>4Mbpsでもアップロードや再生に問題がある場合、ビットレートをさらに低くしてファイルサイズを削減する必要があります。以下の方法で設定を調整してください。</p>
+<ol>
+<li>
+<p>CRF値を上げる: CRF値をさらに上げることで、ビットレートが低くなり、ファイルサイズが削減されます。CRF値を25〜28の範囲で試してみてください。ただし、動画品質が低下することもありますので、適切なバランスを見つけるために試行錯誤が必要です。</p>
+</li>
+<li>
+<p>解像度を下げる: 720pから480p（854x480ピクセル）に解像度を下げることで、ビットレートが低くなります。ただし、動画品質が低下するため、視聴体験に影響が出ることがあります。</p>
+</li>
+<li>
+<p>オプション設定を調整する: 追加のオプションで指定された<code>ref=5:bframes=5</code>の値を減らすことで、エンコード速度を向上させ、圧縮効率を低くすることができます。これにより、ビットレートが低くなりますが、動画品質が低下する可能性があります。</p>
+</li>
+</ol>
+<p>これらの設定を調整した後、動画のプレビューをチェックして品質とファイルサイズが適切であることを確認してください。最適な結果を得るために、試行錯誤が必要です。</p>
+<p>また、Twitterの動画アップロードに関する制限が変更された可能性も考慮して、最新の情報を確認してください。制限が変更されている場合、適切な設定に合わせて調整する必要があります。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>ref=5:bframes=5の数字をあげてもbitrateは変わらないのですか？</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p><code>ref=5:bframes=5</code>の数字を上げることで、ビットレートが変わる可能性がありますが、その影響は限定的であることが一般的です。それでも試してみる価値はあります。</p>
+<p><code>ref</code>（参照フレーム数）と<code>bframes</code>（B-フレーム数）の値を上げることで、動画品質が向上し、圧縮効率が高くなる可能性があります。ただし、エンコード速度が遅くなることがあります。一方で、これらの値を下げることで、エンコード速度が向上し、圧縮効率が低くなります。これにより、ビットレートが高くなることがありますが、動画品質が低下する可能性があります。</p>
+<p>ビットレートを大幅に変更するためには、CRF値や解像度を調整することが効果的です。CRF値を上げることで、ビットレートが低くなり、ファイルサイズが削減されます。解像度を下げることで、ビットレートが低くなりますが、動画品質が低下するため、視聴体験に影響が出ることがあります。</p>
+<p>最適な設定を見つけるために、複数のCRF値やオプション設定でエンコードを試し、動画品質とファイルサイズが適切であることを確認してください。そして、<code>ref</code>と<code>bframes</code>の値も試行錯誤して調整してみてください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>動画のカットでwindows10のデフォルトの機能でカットはしない方がよいのでしょうか？</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Windows 10のデフォルトの動画編集機能（「フォト」アプリ）は、基本的な動画編集機能を提供しています。これには、動画のトリミング（カット）や分割、結合などが含まれます。しかし、この機能はプロフェッショナルな動画編集には向いていないため、高度な編集やエンコード設定の調整が必要な場合は、他の動画編集ソフトウェアを検討することをお勧めします。</p>
+<p>ただし、動画のカットが目的であれば、Windows 10のデフォルトの機能でも十分な場合があります。動画をカットして品質が劣化しないかどうかを確認するために、試しにカットしてみてください。問題がなければ、そのまま使用しても問題ありません。</p>
+<p>もし、品質やエンコード設定の調整が必要な場合は、より高度な動画編集ソフトウェアを検討してください。例えば、無償で使用できるDaVinci Resolveや、シンプルで使いやすいShotcut、そして日本製のAviUtlなどがあります。これらのソフトウェアは、動画の編集やエンコード設定の調整に柔軟性を持って対応できます。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>最終的にはffmpegでカットしたいと考えています</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>FFmpegは、動画と音声のエンコード、デコード、変換、ストリーミングなどを行うことができる強力なコマンドラインツールです。FFmpegを使って動画をカットすることは、高品質で効率的に行うことができます。</p>
+<p>FFmpegを使って動画をカットするには、以下のコマンドを使用します。</p>
+<pre><code>ffmpeg -i input.mp4 -ss [start_time] -to [end_time] -c copy output.mp4
+</code></pre>
+<p>ここで、<code>input.mp4</code>はカットする動画ファイルの名前、<code>[start_time]</code>はカット開始時間（例：<code>00:01:30</code>）、<code>[end_time]</code>はカット終了時間（例：<code>00:02:30</code>）、<code>output.mp4</code>はカット後の動画ファイルの名前です。<code>-c copy</code>オプションは、エンコードを行わずに入力ファイルのコーデック設定をそのままコピーすることを指定しています。これにより、劣化なしで高速にカットすることができます。</p>
+<p>例えば、動画ファイル<code>input.mp4</code>を1分30秒から2分30秒までカットしたい場合、以下のようなコマンドになります。</p>
+<pre><code>ffmpeg -i input.mp4 -ss 00:01:30 -to 00:02:30 -c copy output.mp4
+</code></pre>
+<p>このコマンドを実行すると、<code>output.mp4</code>という名前のカットされた動画ファイルが生成されます。</p>
+<p>FFmpegを使って動画をカットすることで、劣化せずに効率的に動画編集を行うことができます。ただし、FFmpegはコマンドラインツールであるため、操作に慣れるまでに時間がかかることがあります。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>BeatSaberのプレイ動画のため、曲前後の無音部分を除いた部分を取得したいです。
+また、曲の節目でカットしたいです</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>Beat Saberのプレイ動画から曲前後の無音部分をカットし、曲の節目でカットする場合、まず動画から無音部分を検出し、その範囲を特定する必要があります。次に、指定された範囲で動画をカットします。これらの手順は、FFmpegを使って実行することができます。</p>
+<ol>
+<li>無音部分の検出:
+FFmpegで無音部分を検出するには、以下のコマンドを使用します。</li>
+</ol>
+<pre><code>ffmpeg -i input.mp4 -af silencedetect=noise=-30dB:d=0.5 -f null - 2>&#x26;1 | grep -e 'silencedetect.*silence_start' -e 'silencedetect.*silence_end'
+</code></pre>
+<p>このコマンドは、<code>input.mp4</code>から無音部分を検出し、その開始時刻と終了時刻を出力します。<code>-30dB</code>や<code>d=0.5</code>の値は、無音とみなす閾値や最小持続時間を調整することができます。適切な値に調整してください。</p>
+<ol start="2">
+<li>動画のカット:
+無音部分の開始時刻と終了時刻を特定したら、その範囲で動画をカットします。FFmpegでカットするには、以下のコマンドを使用します。</li>
+</ol>
+<pre><code>ffmpeg -i input.mp4 -ss [start_time] -to [end_time] -c copy output.mp4
+</code></pre>
+<p>ここで、<code>[start_time]</code>はカット開始時間、<code>[end_time]</code>はカット終了時間です。</p>
+<ol start="3">
+<li>曲の節目でカット:
+曲の節目でカットするには、まず節目のタイムコードを特定する必要があります。これは、音楽ソフトウェアや動画編集ソフトウェアを使って行うことができます。節目のタイムコードを特定したら、上記のカットコマンドを使用して動画をカットします。</li>
+</ol>
+<p>これらの手順を組み合わせて、Beat Saberのプレイ動画から無音部分をカットし、曲の節目でカットすることができます。ただし、FFmpegはコマンドラインツールであるため、操作に慣れるまでに時間がかかることがあります。代わりに、より直感的なインターフェースを持つ動画編集ソフトウェアを使用することも検討してください。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>E:\Video\AGDRec\video_20230409_205817_edit_4/10203/_103052.mp4: No such file or directory</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-4">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>エラーメッセージから判断すると、指定したファイルが見つからないため、FFmpegが動作していません。この問題を解決するために、ファイルパスが正しいかどうかを確認してください。</p>
+<p>Windowsでは、パスにスペースが含まれる場合、ファイルパスを二重引用符で囲む必要があります。例えば：</p>
+<pre><code>ffmpeg -i "E:\Video\AGDRec\video_20230409_205817_edit_4\10203\_103052.mp4" ...
+</code></pre>
+<p>また、指定したディレクトリが存在することを確認してください。エクスプローラーでディレクトリを開き、ファイルが存在することを確認してください。存在しない場合は、正しいパスを指定してください。</p>
+<p>さらに、FFmpegがインストールされているディレクトリが環境変数PATHに追加されていることを確認してください。これにより、どのディレクトリからでもFFmpegを実行できます。環境変数PATHに追加されていない場合は、FFmpegの実行ファイル（<code>ffmpeg.exe</code>）があるディレクトリでコマンドを実行するか、環境変数PATHに追加してください。</p>
+<p>これらの手順を確認しても問題が解決しない場合は、さらなるトラブルシューティングが必要です。エラーメッセージや現象を詳しくお知らせいただくことで、より具体的な解決策を提案することができます。</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author user">
+        <img alt="You" />
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>ffmpeg自体は動作しています。
+上記エラーは、出力先のファイル名でエラーが発生していたようです。
+すなわち以下のsuffix設定部分に問題があります
+
+set &quot;output_file_suffix=%date:~-4%%date:~-10,2%%date:~-7,2%_%time:~-11,2%%time:~-8,2%%time:~-5,2%&quot;
+set &quot;output_file=%output_dir%%filename_no_ext%_%output_file_suffix%.mp4&quot;</p>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="conversation-item">
+    <div class="author GPT-3">
+        <svg width="41" height="41"><use xlink:href="#chatgpt" /></svg>
+    </div>
+    <div class="conversation-content-wrapper">
+        <div class="conversation-content">
+            <p>エラーメッセージから判断すると、出力先のファイル名に問題があるようです。設定部分を確認すると、<code>output_file_suffix</code>変数にファイル名のサフィックスを設定しようとしています。ここで使用している日付と時刻のフォーマットが、ファイル名に使用できない文字を含んでいる可能性があります。</p>
+<p>ファイル名に使用できない文字は、一般的には次のものです。<code>\ / : * ? " &#x3C; > |</code></p>
+<p>ファイル名を生成する際に、これらの文字が含まれていないか確認してください。例えば、以下のように日付と時刻を生成することができます。</p>
+<pre><code>set "output_file_suffix=%date:~4,4%%date:~7,2%%date:~10,2%_%time:~0,2%%time:~3,2%%time:~6,2%"
+</code></pre>
+<p>この場合、ファイル名に使用できない文字は含まれていないため、問題が解決される可能性があります。</p>
+        </div>
+    </div>
+    
+</div>
+    </div>
+
+
+    <script>
+        function toggleDarkMode(mode) {
+            const html = document.querySelector('html')
+            const isDarkMode = html.getAttribute('data-theme') === 'dark'
+            const newMode = mode || (isDarkMode ? 'light' : 'dark')
+            if (newMode !== 'dark' && newMode !== 'light') return
+            html.setAttribute('data-theme', newMode)
+
+            const url = new URL(window.location)
+            url.searchParams.set('theme', newMode)
+            window.history.replaceState({}, '', url)
+        }
+
+        // Support for ?theme=dark
+        const urlParams = new URLSearchParams(window.location.search)
+        const theme = urlParams.get('theme')
+        if (theme) toggleDarkMode(theme)
+
+        document.querySelector('.toggle').addEventListener('click', () => toggleDarkMode())
+    </script>
+</body>
+
+</html>
